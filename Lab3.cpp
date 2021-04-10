@@ -1,4 +1,4 @@
-﻿// Lab3.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
+// Lab3.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
 //
 
 #include <iostream>
@@ -8,6 +8,7 @@ int main()
 {
     generate_matrix();
     balance_Nesh();
+    balance_Parreto();
    // std::cout << "Hello World!\n";
 }
 
