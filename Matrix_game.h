@@ -1,9 +1,11 @@
 #pragma once
 #include <vector>
 #include <algorithm>
-#include "C:\ÌÃÒÓ\ÒåîğèÿÈãğ\NumCpp-master\include\NumCpp\Functions.hpp"
-#include "C:\ÌÃÒÓ\ÒåîğèÿÈãğ\NumCpp-master\include\NumCpp\NdArray.hpp"
+#include "C:\ĞœĞ“Ğ¢Ğ£\Ğ¢ĞµĞ¾Ñ€Ğ¸ÑĞ˜Ğ³Ñ€\NumCpp-master\include\NumCpp\Functions.hpp"
+#include "C:\ĞœĞ“Ğ¢Ğ£\Ğ¢ĞµĞ¾Ñ€Ğ¸ÑĞ˜Ğ³Ñ€\NumCpp-master\include\NumCpp\NdArray.hpp"
 
 void balance_Nesh();
 void balance_Parreto();
 void generate_matrix();
+void bypass_of_matrix_A(int elem_A, int elem_B);
+void bypass_of_matrix_B(int elem_A, int elem_B);
