@@ -2,13 +2,20 @@
 //
 
 #include <iostream>
+#include <clocale>
 #include "Matrix_game.h"
 
 int main()
 {
-    generate_matrix();
-    balance_Nesh();
-    balance_Parreto();
+    system("chcp 1251");
+    std::cout << "\x1b[31m"<<1<<"\x1b[0m" << std::endl;
+    std::cout << "Game for 10x10" << std::endl;
+    generate_matrix(2);
+    generate_matrix(10);
+    balance_Nesh(10);
+    balance_Parreto(10);
+    //print(2);
+    print(10);
    // std::cout << "Hello World!\n";
 }
 
