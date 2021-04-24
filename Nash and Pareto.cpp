@@ -5,7 +5,7 @@
  std::vector<double> result_Nash;
  std::vector<double> result_Pareto;
 
-void balance_Nesh(int N) //равновесие по Нэшу
+void balance_Nesh(int N) //Г°Г ГўГ­Г®ГўГҐГ±ГЁГҐ ГЇГ® ГЌГЅГёГі
 {
 	size_t flag = 0;
 	size_t flag2 = 0;
@@ -143,7 +143,7 @@ void balance_Nesh(int N) //равновесие по Нэшу
 						break;
 					}
 				}
-
+				
 				if (flag2 == 0)
 				{
 					result_Nash.push_back(matrix_for_player_A(i, j));
@@ -151,7 +151,7 @@ void balance_Nesh(int N) //равновесие по Нэшу
 				}
 			}
 			flag2 = 0;
-			if (i > 0 && j == 0 && i < N - 1 && (matrix_for_player_B(i, j) >= matrix_for_player_B(i, j + 1))) //i>1 и i<N-1 и j=0
+			if (i > 0 && j == 0 && i < N - 1 && (matrix_for_player_B(i, j) >= matrix_for_player_B(i, j + 1))) //i>1 ГЁ i<N-1 ГЁ j=0
 			{
 
 				for (auto ii = i + 1; ii <= N - 1; ++ii)
@@ -199,7 +199,7 @@ void balance_Nesh(int N) //равновесие по Нэшу
 				}
 			}
 			flag2 = 0;
-			if (i > 0 && j == N - 1 && i < N - 1 && (matrix_for_player_B(i, j) >= matrix_for_player_B(i, j - 1))) //i>1 и i<N-1 и j=N-1
+			if (i > 0 && j == N - 1 && i < N - 1 && (matrix_for_player_B(i, j) >= matrix_for_player_B(i, j - 1))) //i>1 ГЁ i<N-1 ГЁ j=N-1
 			{
 
 				for (auto ii = i + 1; ii <= N - 1; ++ii)
@@ -313,7 +313,7 @@ void balance_Nesh(int N) //равновесие по Нэшу
 	}
 }
 
-void balance_Pareto(int N) //равновесие по Парето
+void balance_Pareto(int N) //Г°Г ГўГ­Г®ГўГҐГ±ГЁГҐ ГЇГ® ГЏГ Г°ГҐГІГ®
 {
 	auto element_matrix_A = 0;
 	for (auto i = 0; i < N; ++i)
