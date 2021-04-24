@@ -1,53 +1,67 @@
 #include "Matrix_game.h"
 
-nc::NdArray<double> matrix_for_player_B(10,10);
-nc::NdArray<double> matrix_for_player_A(10,10);
-std::vector<double> result_Nash;
-std::vector<double> result_Pareto;
 
 void generate_matrix(int N)
 {
-	auto e = 0.0;
 	std::srand(time(NULL));
+	double e = floor((static_cast <double> (rand()) / static_cast <double> (RAND_MAX))*10)/10; //случайное число для задачи Перекрёсток
+
 	if (N == 2)
 	{
-		std::cout << "Р—Р°РґР°С‡Р° СЃРјРµР№РЅС‹Р№ СЃРїРѕСЂ" << std::endl;
-		matrix_for_player_A(0, 0) = 4;
-		matrix_for_player_A(0, 1) = 0;
-		matrix_for_player_A(1, 0) = 0;
-		matrix_for_player_A(1, 1) = 1;
-		matrix_for_player_B(0, 0) = 1;
-		matrix_for_player_B(0, 1) = 0;
-		matrix_for_player_B(1, 0) = 0;
-		matrix_for_player_B(1, 1) = 4;
-		balance_Nesh(2);
-		balance_Parreto(2);
-		std::cout << "Р’РІРµРґРёС‚Рµ e РґР»СЏ РёРіСЂС‹ 'РџРµСЂРµРєСЂС‘СЃС‚РѕРє' e=";
-		std::cin >> e;
-		matrix_for_player_A(0, 0) = 1;
-		matrix_for_player_A(0, 1) = 1-e;
-		matrix_for_player_A(1, 0) = 2;
-		matrix_for_player_A(1, 1) = 0;
-		matrix_for_player_B(0, 0) = 1;
-		matrix_for_player_B(0, 1) = 2;
-		matrix_for_player_B(1, 0) = 1-e;
-		matrix_for_player_B(1, 1) = 0;
-		balance_Nesh(2);
-		balance_Parreto(2);
-		std::cout << "Р—Р°РґР°С‡Р° РґРёР»РµРјР° Р·Р°РєР»СЋС‡РµРЅРЅРѕРіРѕ" << std::endl;
-		matrix_for_player_A(0, 0) = -5;
-		matrix_for_player_A(0, 1) = 0;
-		matrix_for_player_A(1, 0) = -10;
-		matrix_for_player_A(1, 1) = -1;
-		matrix_for_player_B(0, 0) = -5;
-		matrix_for_player_B(0, 1) = -10;
-		matrix_for_player_B(1, 0) = 0;
-		matrix_for_player_B(1, 1) = -1;
-		balance_Nesh(2);
-		balance_Parreto(2);
+		std::cout << "Задача смейный спор" << std::endl;
+		matrix_for_player_A(0, 0) = 4; matrix_for_player_A(0, 1) = 0;
+		matrix_for_player_A(1, 0) = 0; matrix_for_player_A(1, 1) = 1;
+		matrix_for_player_B(0, 0) = 1; matrix_for_player_B(0, 1) = 0;
+		matrix_for_player_B(1, 0) = 0; matrix_for_player_B(1, 1) = 4;
+		balance_Nesh(2); balance_Pareto(2); print(2);
+		std::cout << "----------------------------------------" << std::endl;
+		std::cout << "----------------------------------------" << std::endl;
+		result_Nash.clear();result_Pareto.clear();
+		std::cout << "Игра 'Перекрёсток'" << std::endl;
+		matrix_for_player_A(0, 0) = 1; matrix_for_player_A(0, 1) = 1.0-e;
+		matrix_for_player_A(1, 0) = 2; matrix_for_player_A(1, 1) = 0;
+		matrix_for_player_B(0, 0) = 1; matrix_for_player_B(0, 1) = 2;
+		matrix_for_player_B(1, 0) = 1.0-e; 	matrix_for_player_B(1, 1) = 0;
+		balance_Nesh(2);balance_Pareto(2);print(2);
+		result_Nash.clear();result_Pareto.clear();
+		std::cout << "----------------------------------------" << std::endl;
+		std::cout << "----------------------------------------" << std::endl;
+		std::cout << "Задача дилемма заключенного" << std::endl;
+		matrix_for_player_A(0, 0) = -5;	matrix_for_player_A(0, 1) = 0;
+		matrix_for_player_A(1, 0) = -10; matrix_for_player_A(1, 1) = -1;
+		matrix_for_player_B(0, 0) = -5;	matrix_for_player_B(0, 1) = -10;
+		matrix_for_player_B(1, 0) = 0;	matrix_for_player_B(1, 1) = -1;
+		balance_Nesh(2);balance_Pareto(2);print(2);
+		result_Nash.clear();result_Pareto.clear();
+		std::cout << "----------------------------------------" << std::endl;
+		std::cout << "----------------------------------------" << std::endl;
 	}
 
-	if (N == 10)
+	if (N == 3)
+	{
+		std::cout << "Биматричная игра" << std::endl;
+		matrix_for_player_A(0, 0) = 0;	matrix_for_player_A(0, 1) = 9;
+		matrix_for_player_A(1, 0) = 4;	matrix_for_player_A(1, 1) = 6;
+		matrix_for_player_B(0, 0) = 1;	matrix_for_player_B(0, 1) = 2;
+		matrix_for_player_B(1, 0) = 6;	matrix_for_player_B(1, 1) = 3;
+		result_Nash.clear(); result_Pareto.clear(); balance_Nesh(2); balance_Pareto(2); print(2);
+		/*nc::NdArray<double> vec_u = { 1,1 };
+		auto vv1 = 1.0 / (vec_u * nc::linalg::inv(matrix_for_player_A) * vec_u.transpose());
+		auto vv2 = 1.0 / (vec_u * nc::linalg::inv(matrix_for_player_B) * vec_u.transpose());
+		nc::NdArray<double> vec_x;
+		nc::NdArray<double> vec_y;
+		vec_x = vv2 * vec_u * nc::linalg::inv(matrix_for_player_B);
+		vec_y = vv1 * nc::linalg::inv(matrix_for_player_B) * vec_u.transpose();
+		std::cout << "Равновесные выигрыши: v1=" << floor((1.0 / vv1) * 100) / 100 << " v2=" << floor((1.0 / vv2) * 100) / 100 << std::endl;
+		std::cout << "x=["<<vec_x << "] y=[" << vec_y.transpose() << "]" << std::endl;*/
+
+		auto v1 = 7.0 / 36.0;
+		auto v2 = 4.0 / 9.0;
+		std::cout << "Равновесные выигрыши: v1=" << floor((1.0 / v1)*100)/100 << " v2=" << floor((1.0 / v2)*100)/100 << std::endl;
+		std::cout << "x=[" << 3.0 / 4.0 << "," << 1.0 / 4.0 << "] y=[" << floor((3.0 / 7.0)*100)/100 << "," << floor((4.0 / 7.0)*100)/100 << "]" << std::endl;	
+	}
+
+	if (N == 10) //генерация матрицы 10 на 10
 	{
 		for (auto i = 0; i < 10; ++i)
 		{
@@ -60,361 +74,9 @@ void generate_matrix(int N)
 	}
 }
 
-
-
-void balance_Nesh(int N)
+void bypass_of_matrix(double elem_A, double elem_B, int N) //Обход матрицы для равновесия Парето
 {
-	std::cout << "-------" << std::endl;
-	size_t flag = 0;
-	size_t flag2 = 0;
-	
-
-	for (auto i = 0; i < N; ++i)
-	{
-		for (auto j = 0; j < N; ++j)
-		{
-			//std::cout << "i=" << i << " j=" << j << std::endl;
-
-			if (j == 0 && i == 0 && (matrix_for_player_B(i, j) > matrix_for_player_B(i, j + 1))) //i=0,j=0
-			{
-					for (auto jj = 2; jj < N; ++jj)
-					{
-						if (matrix_for_player_B(i, j) > matrix_for_player_B(i, jj))
-						{
-							continue;
-						}
-						else
-						{
-							flag2 = 1;
-							break;
-						}
-					}
-					for (auto ii = 1; ii < N; ++ii)
-					{
-						if ((matrix_for_player_A(i, j) > matrix_for_player_A(ii, j)))
-						{
-							continue;
-						}
-						else
-						{
-							flag2 = 1;
-							break;
-						}
-					}
-					if (flag2 == 0)
-					{
-						result_Nash.emplace_back(matrix_for_player_A(i, j));
-						result_Nash.emplace_back(matrix_for_player_B(i, j));
-						//std::cout << "optimal Nash0,0=" << matrix_for_player_A(i, j) << " " << matrix_for_player_B(i, j) << " i=" << i << " " << "j=" << j << std::endl;
-					}
-					//flag = 1;
-			}
-			flag2 = 0;
-			if (j == N-1 && i == 0 && (matrix_for_player_B(i, j) > matrix_for_player_B(i, j - 1))) //i=0,j=N-1
-			{
-				
-				for (auto jj = N-2; jj >= 0; --jj)
-				{
-					if (matrix_for_player_B(i, j) > matrix_for_player_B(i, jj))
-					{
-						continue;
-					}
-					else
-					{
-						flag2 = 1;
-						break;
-					}
-				}
-				for (auto ii = 1; ii < N; ++ii)
-				{
-					if ((matrix_for_player_A(i, j) > matrix_for_player_A(ii, j)))
-					{
-						continue;
-					}
-					else
-					{
-						flag2 = 1;
-						break;
-					}
-				}
-				if (flag2 == 0)
-				{
-					result_Nash.emplace_back(matrix_for_player_A(i, j));
-					result_Nash.emplace_back(matrix_for_player_B(i, j));
-					//std::cout << "optimal Nash0,9=" << matrix_for_player_A(i, j) << " " << matrix_for_player_B(i, j) << " i=" << i << " " << "j=" << j << std::endl;
-				}
-				//flag = 1;
-			}
-			flag2 = 0;
-			if (j == 0 && i == N-1 && (matrix_for_player_B(i, j) > matrix_for_player_B(i, j + 1))) //i=N-1,j=0
-			{
-
-				for (auto jj = 2; jj < N; ++jj)
-				{
-					if (matrix_for_player_B(i, j) > matrix_for_player_B(i, jj))
-					{
-						continue;
-					}
-					else
-					{
-						flag2 = 1;
-						break;
-					}
-				}
-				for (auto ii = N-2; ii >= 0; --ii)
-				{
-					if ((matrix_for_player_A(i, j) > matrix_for_player_A(ii, j)))
-					{
-						continue;
-					}
-					else
-					{
-						flag2 = 1;
-						break;
-					}
-				}
-
-				//if ((matrix_for_player_A(i, j) > matrix_for_player_A(i - 1, j)))
-				//{
-				if (flag2 == 0)
-				{
-					result_Nash.emplace_back(matrix_for_player_A(i, j));
-					result_Nash.emplace_back(matrix_for_player_B(i, j));
-					//std::cout << "optimal Nash9,0=" << matrix_for_player_A(i, j) << " " << matrix_for_player_B(i, j) << " i=" << i << " " << "j=" << j << std::endl;
-				}
-				//flag = 1;
-					//	break;
-				//}
-			}
-			flag2 = 0;
-			if (j == N-1 && i == N-1 && (matrix_for_player_B(i, j) > matrix_for_player_B(i, j - 1))) //i=9,j=9
-			{
-				
-				for (auto jj = N-2; jj >= 0; --jj)
-				{
-					if (matrix_for_player_B(i, j) > matrix_for_player_B(i, jj))
-					{
-						continue;
-					}
-					else
-					{
-						flag2 = 1;
-						break;
-					}
-				}
-				for (auto ii = N-2; ii >= 0; --ii)
-				{
-					if ((matrix_for_player_A(i, j) > matrix_for_player_A(ii, j)))
-					{
-						continue;
-					}
-					else
-					{
-						flag2 = 1;
-						break;
-					}
-				}
-				
-				//if ((matrix_for_player_A(i, j) > matrix_for_player_A(i - 1, j)))
-				//{
-				if (flag2 == 0)
-				{
-					result_Nash.emplace_back(matrix_for_player_A(i, j));
-					result_Nash.emplace_back(matrix_for_player_B(i, j));
-					//std::cout << "optimal Nash9,9=" << matrix_for_player_A(i, j) << " " << matrix_for_player_B(i, j) << " i=" << i << " " << "j=" << j << std::endl;
-				}
-				//flag = 1;
-					//	break;
-				//}
-			}
-			flag2 = 0;
-			if (i > 0 && j == 0 && i < N-1 && (matrix_for_player_B(i, j) > matrix_for_player_B(i, j + 1))) //i>1 Рё i<9 Рё j=0
-			{
-				
-				for (auto ii = i+1; ii <= N-1; ++ii)
-				{
-					if (matrix_for_player_A(i, j) > matrix_for_player_A(ii, j))
-					{
-						continue;
-					}
-					else
-					{
-						flag2 = 1;
-						break;
-					}
-				}
-
-				for (auto ii = i - 1; ii >= 0; --ii)
-				{
-					if (matrix_for_player_A(i, j) > matrix_for_player_A(ii, j))
-					{
-						continue;
-					}
-					else
-					{
-						flag2 = 1;
-						break;
-					}
-				}
-
-				for (auto jj = 2; jj < N; ++jj)
-				{
-					if (matrix_for_player_B(i, j) > matrix_for_player_B(i, jj))
-					{
-						continue;
-					}
-					else
-					{
-						flag2 = 1;
-						break;
-					}
-				}
-				//if (matrix_for_player_A(i, j) > matrix_for_player_A(i - 1, j) && matrix_for_player_A(i, j) > matrix_for_player_A(i + 1, j))
-				//{
-				if (flag2 == 0)
-				{
-					result_Nash.emplace_back(matrix_for_player_A(i, j));
-					result_Nash.emplace_back(matrix_for_player_B(i, j));
-					//std::cout << "optimal Nash0=" << matrix_for_player_A(i, j) << " " << matrix_for_player_B(i, j) << " i=" << i << " " << "j=" << j << std::endl;
-				}
-					//flag = 1;
-					//	break;
-				//}
-			}
-			flag2 = 0;
-			if (i > 0 && j == N-1 && i < N-1 && (matrix_for_player_B(i, j) > matrix_for_player_B(i, j - 1))) //i>1 Рё i<9 Рё j=9
-			{
-
-				for (auto ii = i + 1; ii <= N-1; ++ii)
-				{
-					if (matrix_for_player_A(i, j) > matrix_for_player_A(ii, j))
-					{
-						continue;
-					}
-					else
-					{
-						flag2 = 1;
-						break;
-					}
-				}
-
-				for (auto ii = i - 1; ii >= 0; --ii)
-				{
-					if (matrix_for_player_A(i, j) > matrix_for_player_A(ii, j))
-					{
-						continue;
-					}
-					else
-					{
-						flag2 = 1;
-						break;
-					}
-				}
-
-				for (auto jj = N-1; jj >= 0; --jj)
-				{
-					if (matrix_for_player_B(i, j) > matrix_for_player_B(i, jj))
-					{
-						continue;
-					}
-					else
-					{
-						flag2 = 1;
-						break;
-					}
-				}
-
-				//if (matrix_for_player_A(i, j) > matrix_for_player_A(i - 1, j) && matrix_for_player_A(i, j) > matrix_for_player_A(i + 1, j))
-				//{
-				if (flag2 == 0)
-				{
-					result_Nash.emplace_back(matrix_for_player_A(i, j));
-					result_Nash.emplace_back(matrix_for_player_B(i, j));
-					//std::cout << "optimal Nash9=" << matrix_for_player_A(i, j) << " " << matrix_for_player_B(i, j) << " i=" << i << " " << "j=" << j << std::endl;
-				}
-					//flag = 1;
-					//	break;
-				//}
-			}
-			flag2 = 0;
-			if ((matrix_for_player_B(i, j) > matrix_for_player_B(i, j-1)) && (matrix_for_player_B(i, j) > matrix_for_player_B(i, j+1)) && i > 0 && i < N-1 && j>0 && j < N-1) //i>0 i<9 j>0 j<9
-			{
-				for (auto ii = i + 1; ii < N; ++ii)
-				{
-					if (matrix_for_player_A(i, j) > matrix_for_player_A(ii, j))
-					{
-						continue;
-					}
-					else
-					{
-						flag2 = 1;
-						break;
-					}
-				}
-
-				for (auto ii = i - 1; ii >= 0; --ii)
-				{
-					if (matrix_for_player_A(i, j) > matrix_for_player_A(ii, j))
-					{
-						continue;
-					}
-					else
-					{
-						flag2 = 1;
-						break;
-					}
-				}
-
-				for (auto jj = j + 1; jj < N-1; ++jj)
-				{
-					if (matrix_for_player_B(i, j) > matrix_for_player_B(i, jj))
-					{
-						continue;
-					}
-					else
-					{
-						flag2 = 1;
-						break;
-					}
-				}
-
-				for (auto jj = j - 1; jj >=0; --jj)
-				{
-					if (matrix_for_player_B(i, j) > matrix_for_player_B(i, jj))
-					{
-						continue;
-					}
-					else
-					{
-						flag2 = 1;
-						break;
-					}
-				}
-
-				//if ((matrix_for_player_A(i, j) > matrix_for_player_A(i, j - 1)) && (matrix_for_player_A(i, j) > matrix_for_player_A(i, j + 1)))
-				//{
-				if (flag2 == 0)
-				{
-					//std::cout << "optimal Nash=" << matrix_for_player_A(i, j) << " " << matrix_for_player_B(i, j) << " i=" << i << " " << "j=" << j << std::endl;
-					result_Nash.emplace_back(matrix_for_player_A(i, j));
-					result_Nash.emplace_back(matrix_for_player_B(i, j));
-				}
-				//flag = 1;
-					//	break;
-				//}
-			}
-		}
-		/*if (flag == 1)
-		{
-			break;
-		}*/
-	}
-	
-}
-
-void bypass_of_matrix_A(int elem_A, int elem_B, int N)
-{
-	size_t flag = 0, flag2 = 0;
+	size_t flag = 0, flag2 = 0;//flag==0 - если найдена точка равновесия по Парето, flag2==1 - если точка не равновесна по Парето
 	for (auto i = 0; i < N; ++i)
 	{
 		for (auto j = 0; j < N; ++j)
@@ -425,99 +87,120 @@ void bypass_of_matrix_A(int elem_A, int elem_B, int N)
 				flag++;
 				continue;
 			}
+
+			if ((elem_A >= matrix_for_player_A(i, j)) && elem_B >= matrix_for_player_B(i, j))
+			{
+
+				flag++;
+				continue;
+			}
+			else if ((elem_A < matrix_for_player_A(i, j)) && elem_B <= matrix_for_player_B(i, j))
+			{
+			flag = 0;
+			flag2 = 1;
+			break;
+			}
+			else if ((elem_A <= matrix_for_player_A(i, j)) && elem_B < matrix_for_player_B(i, j))
+			{
+			flag = 0;
+			flag2 = 1;
+			break;
+			}
 			else
 			{
-				if (elem_A >= matrix_for_player_A(i, j))
-				{
-					//if (elem_B >= matrix_for_player_B(i, j))
-					{
-						flag++;
-						continue;
-					}
-				}
-				if (elem_A < matrix_for_player_A(i, j))
-				{
-					if (elem_B < matrix_for_player_B(i, j))
-					{
-						flag2 = 1;
-						flag = 0;
-						break;
-					}
-					else
-					{
-						flag++;
-						continue;
-						
-					}
+			flag++;
+			continue;
+			}
 
-				}
+			if (elem_A < matrix_for_player_A(i, j) && (elem_B < matrix_for_player_B(i, j)))
+			{
+				flag = 0;
+				flag2 = 1;
+				break;
 			}
 		}
-		if (( flag==100) && N==10)
+		if ((flag == 100) && N == 10) //для матриц 10 на 10
 		{
-			//std::cout << "optimal_Pareto=" << flag << std::endl;
-			std::cout << "optimal_Pareto -> elem_A=" << elem_A << " " << "elem_B=" << elem_B << std::endl;
-			result_Pareto.emplace_back(elem_A);
-			result_Pareto.emplace_back(elem_B);
-			//print(elem_A, elem_B, N);
+			result_Pareto.push_back(elem_A);
+			result_Pareto.push_back(elem_B);
 			break;
 		}
 
-		if ((flag == 4) && N == 2)
+		if ((flag == 4) && N == 2) //для матриц 2 на 2
 		{
-			std::cout << "optimal_Pareto -> elem_A=" << elem_A << " " << "elem_B=" << elem_B << std::endl;
-			result_Pareto.emplace_back(elem_A);
-			result_Pareto.emplace_back(elem_B);
-			//print(elem_A, elem_B, N);
+			result_Pareto.push_back(elem_A);
+			result_Pareto.push_back(elem_B);
 			break;
 		}
 
-		if (flag2 == 1)
+		if (flag2 == 1) //точка не равновесна по Парето
 		{
+			flag2 = 0;
+			flag = 0;
 			break;
 		}
 	}
-	
 }
 
-
-void balance_Parreto(int N)
+void print(int N) //вывод 
 {
-	auto element_matrix_A = 0;
-	std::vector<double> matrix_for_A = matrix_for_player_A.toStlVector();
-	std::vector<double> matrix_for_B = matrix_for_player_B.toStlVector();
+	if (!result_Nash.empty())
+	{
+		std::cout << "Ситуации равновесия по Нэшу" << std::endl;
+		for (auto i : result_Nash)
+		{
+			std::cout << i << " ";
+		}
+	}
+
+	if (!result_Pareto.empty())
+	{
+		std::cout << std::endl;
+		std::cout << "Ситуации равновесия по Парето" << std::endl;
+		for (auto i : result_Pareto)
+		{
+			std::cout << i << " ";
+		}
+	}
+	std::cout << std::endl;
+	std::cout << "----------------------------------------" << std::endl;
+	std::cout << "----------------------------------------" << std::endl;
+	std::cout << "Пересечение множеств" << std::endl;
+	for (auto itP = result_Pareto.begin(); itP != result_Pareto.end(); itP += 2)
+	{
+		if ((std::find(result_Nash.begin(), result_Nash.end(), *itP) != result_Nash.end()) && (std::find(result_Nash.begin(), result_Nash.end(), *(itP + 1)) != result_Nash.end()))
+		{
+			std::cout << *itP << " " << *(itP + 1) << " ";
+		}
+	}
+	std::cout << std::endl;
+	std::cout << "----------------------------------------" << std::endl;
+	std::cout << "----------------------------------------" << std::endl;
 	for (auto i = 0; i < N; ++i)
 	{
 		for (auto j = 0; j < N; ++j)
 		{
-			bypass_of_matrix_A(matrix_for_player_A(i, j), matrix_for_player_B(i, j), N);
-		//	bypass_of_matrix_B(matrix_for_player_A(i, j), matrix_for_player_B(i, j), N);
-		}
-	}
-			
-	//std::cout << matrix_for_A.at(std::distance(matrix_for_A.begin(), std::max_element(matrix_for_A.begin(), matrix_for_A.end()))) << std::endl;
-	//std::cout << matrix_for_B.at(std::distance(matrix_for_B.begin(), std::max_element(matrix_for_B.begin(), matrix_for_B.end()))) << std::endl;
-
-}
-
-void print(int N)
-{
-
-	for (auto i = 0; i < N; ++i)
-	{
-		for (auto j = 0; j < N; ++j)
-		{
-			if ((*std::find(result_Nash.begin(), result_Nash.end(), matrix_for_player_A(i, j))==matrix_for_player_A(i,j)) && (*std::find(result_Nash.begin(), result_Nash.end(), matrix_for_player_B(i, j))==matrix_for_player_B(i,j)))
+			if ((std::find(result_Nash.begin(), result_Nash.end(), matrix_for_player_A(i, j)) != result_Nash.end()) && ((std::find(result_Nash.begin(), result_Nash.end(), matrix_for_player_B(i, j))) != result_Nash.end()) && (std::find(result_Pareto.begin(), result_Pareto.end(), matrix_for_player_A(i, j)) != result_Pareto.end()) && (std::find(result_Pareto.begin(), result_Pareto.end(), matrix_for_player_B(i, j)) != result_Pareto.end()))
 			{
-				std::cout << "\x1b[31m" << matrix_for_player_A(i, j) << "," << matrix_for_player_B(i, j) << "\x1b[0m" << "\t";
+				std::cout << "\x1b[33m" << matrix_for_player_A(i, j) << "\x1b[0m" << "," << "\x1b[33m" << matrix_for_player_B(i, j) << "\x1b[0m" << "\t";
+				result_Pareto.erase(std::find(result_Pareto.begin(), result_Pareto.end(), matrix_for_player_A(i, j)));
+				result_Pareto.erase(std::find(result_Pareto.begin(), result_Pareto.end(), matrix_for_player_B(i, j)));
 			}
-			else if ((*std::find(result_Pareto.begin(), result_Pareto.end(), matrix_for_player_A(i, j)) == matrix_for_player_A(i, j)) && (*std::find(result_Pareto.begin(), result_Pareto.end(), matrix_for_player_B(i, j)) == matrix_for_player_B(i, j)))
+			else if ((std::find(result_Nash.begin(), result_Nash.end(), matrix_for_player_A(i, j)) != result_Nash.end()) && ((std::find(result_Nash.begin(), result_Nash.end(), matrix_for_player_B(i, j))) != result_Nash.end()))
 			{
-					std::cout << "\x1b[32m" << matrix_for_player_A(i, j) << "," << matrix_for_player_B(i, j) << "\x1b[0m" << "\t";
+				std::cout << "\x1b[31m" << matrix_for_player_A(i, j) << "\x1b[0m" << "," << "\x1b[31m" << matrix_for_player_B(i, j) << "\x1b[0m" << "\t";
+				result_Nash.erase(std::find(result_Nash.begin(), result_Nash.end(), matrix_for_player_A(i, j)));
+				result_Nash.erase(std::find(result_Nash.begin(), result_Nash.end(), matrix_for_player_B(i, j)));
 			}
-			else 
+			else if ((std::find(result_Pareto.begin(), result_Pareto.end(), matrix_for_player_A(i, j)) != result_Pareto.end()) && (std::find(result_Pareto.begin(), result_Pareto.end(), matrix_for_player_B(i, j)) != result_Pareto.end()))
 			{
-			std::cout << matrix_for_player_A(i, j) << "," << matrix_for_player_B(i, j) << "\t";
+				std::cout << "\x1b[32m" << matrix_for_player_A(i, j) << "\x1b[0m" << "," << "\x1b[32m" << matrix_for_player_B(i, j) << "\x1b[0m" << "\t";
+				result_Pareto.erase(std::find(result_Pareto.begin(), result_Pareto.end(), matrix_for_player_A(i, j)));
+				result_Pareto.erase(std::find(result_Pareto.begin(), result_Pareto.end(), matrix_for_player_B(i, j)));
+			}
+			else
+			{
+				std::cout << matrix_for_player_A(i, j) << "," << matrix_for_player_B(i, j) << "\t";
 			}
 		}
 		std::cout << std::endl;
